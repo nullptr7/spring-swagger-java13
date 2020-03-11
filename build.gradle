@@ -1,0 +1,85 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+plugins {
+    id 'org.javamodularity.moduleplugin' version '1.6.0' apply false
+}
+
+
+subprojects {
+
+    apply plugin: 'java'
+
+    // Does the boilerplate stuffs
+    apply plugin: "org.javamodularity.moduleplugin"
+
+    version '1.0-SNAPSHOT'
+    sourceCompatibility = 13
+    targetCompatibility = 13
+
+    repositories {
+        mavenCentral()
+    }
+
+    test {
+        useJUnitPlatform()
+
+        testLogging {
+            events 'PASSED', 'FAILED', 'SKIPPED'
+        }
+    }
+
+    configurations {
+        // We have to use this to resolve conflict with Lombok signature
+        all*.exclude group: 'org.ow2.asm', module:'asm'
+    }
+
+    dependencies {
+
+        repositories {
+            mavenCentral()
+            jcenter()
+        }
+
+
+        compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.4'
+        compile 'org.apache.commons:commons-lang3:3.9'
+
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.1'
+        testImplementation 'org.junit.jupiter:junit-jupiter-params:5.5.1'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.1'
+
+        // Required to only provide at runtime during gradle build process
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.5.1'
+
+        compile ("org.projectlombok:lombok:1.18+")
+
+        annotationProcessor "org.projectlombok:lombok:1.18+"
+        compile group: 'org.mapstruct', name: 'mapstruct-processor', version: '1.3.0.Final'
+
+        implementation('org.springframework.boot:spring-boot-starter-web:2.2.2.RELEASE') {
+            exclude group: 'org.glassfish', module: 'jakarta.el'
+            exclude group: 'org.apache.tomcat', module: 'tomcat-annotations-api'
+        }
+
+        //Test Dependencies
+        testImplementation(group: 'io.projectreactor', name: 'reactor-test', version: '3.3.0.RELEASE')
+
+        runtimeOnly(group: 'com.h2database', name: 'h2', version: '1.4.200')
+        compile group: 'org.jvnet.staxex', name: 'stax-ex', version: '1.8.2'
+
+        /*
+         *  This is required due to java.activation is no longer available in JDK 11
+         *  These version have been upgraded to use jakarta.activation module instead of java.activation
+         */
+        compile(group: 'com.sun.istack', name: 'istack-commons-runtime', version: '3.0.8')
+        compile(group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '2.3.2')
+
+
+        //This is required to address split package issue for swagger jars
+        compile files('C:\\Users\\ishan\\dev\\split-package\\swagger-combined.jar')
+    }
+}

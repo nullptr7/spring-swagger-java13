@@ -1,0 +1,22 @@
+dependencies {
+
+    // User defined libs
+    implementation project(':models')
+    implementation project(':database')
+
+    implementation 'net.bytebuddy:byte-buddy:1.10.2'
+
+    // We are excluding since we created a fat jar containing all the below transitive dependencies
+    compile(group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2') {
+        exclude group: 'io.springfox', module: 'springfox-spi'
+        exclude group: 'io.springfox', module: 'springfox-core'
+        exclude group: 'io.springfox', module: 'springfox-schema'
+    }
+
+    // We are excluding since we created a fat jar containing all the below transitive dependencies
+    compile(group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2') {
+        exclude group: 'io.springfox', module: 'springfox-spi'
+        exclude group: 'io.springfox', module: 'springfox-core'
+        exclude group: 'io.springfox', module: 'springfox-schema'
+    }
+}

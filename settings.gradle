@@ -1,0 +1,6 @@
+rootProject.name = 'spring-swagger-java13'
+include 'services'
+include 'database'
+include 'models'
+include 'webclient'
+

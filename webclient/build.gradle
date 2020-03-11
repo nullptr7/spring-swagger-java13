@@ -1,0 +1,20 @@
+apply plugin: 'application'
+
+mainClassName = "$moduleName/com.github1.nullptr7.SpringWebClientDemo"
+
+dependencies {
+    compile(group: 'io.projectreactor.addons', name: 'reactor-extra', version: '3.3.0.RELEASE')
+
+    testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.2.2.RELEASE') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+        exclude group: 'org.skyscreamer', module: 'jsonassert'
+    }
+
+    implementation project(':models')
+    implementation project(':services')
+
+    compile(group: 'org.springframework.boot', name: 'spring-boot-starter-webflux', version: '2.2.2.RELEASE') {
+        exclude group: 'org.apache.tomcat', module: 'tomcat-annotations-api'
+        exclude group: 'org.glassfish', module: 'jakarta.el'
+    }
+}
