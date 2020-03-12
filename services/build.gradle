@@ -3,6 +3,7 @@ dependencies {
     // User defined libs
     implementation project(':models')
     implementation project(':database')
+    implementation project(':security')
 
     implementation 'net.bytebuddy:byte-buddy:1.10.2'
 

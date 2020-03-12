@@ -3,6 +3,7 @@ module services {
     // User Defined Modules
     requires models;
     requires database;
+    requires security;
 
     // For annotations processing
     requires org.slf4j;
@@ -34,13 +35,14 @@ module services {
     // Mapping related
     requires com.fasterxml.classmate;
     requires com.fasterxml.jackson.databind;
+    requires spring.security.core;
 
 
     // Deep Reflection
     opens com.github.nullptr7.initilizer to spring.core;
     opens com.github.nullptr7 to spring.core, spring.beans, spring.context;
     opens com.github.nullptr7.conf to spring.core, spring.beans, spring.context;
-    opens com.github.nullptr7.controller to spring.beans, spring.web, java.persistence;
+    opens com.github.nullptr7.controller to spring.beans, spring.web, java.persistence, spring.core;
 
     // Creating beans
     exports com.github.nullptr7.initilizer to spring.beans;

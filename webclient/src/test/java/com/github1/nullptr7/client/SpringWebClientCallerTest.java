@@ -1,5 +1,11 @@
 package com.github1.nullptr7.client;
 
+import com.github.nullptr7.ServiceEntryPoint;
+import com.github.nullptr7.models.Address;
+import com.github.nullptr7.models.Employee;
+import com.github.nullptr7.models.security.AdminUser;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -8,9 +14,6 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
-import com.github.nullptr7.ServiceEntryPoint;
-import com.github.nullptr7.models.Address;
-import com.github.nullptr7.models.Employee;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -22,14 +25,37 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 
+@Disabled
 @DisplayName("Employee CRUD operation test case")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(classes = ServiceEntryPoint.class, webEnvironment = DEFINED_PORT)
 class SpringWebClientCallerTest {
 
-    private final WebClient webClient = WebClient.create("http://localhost:8081/services/v1/employees");
+    private static WebClient webClient = WebClient.create("http://localhost:8081/services/v1/employees");
 
     SpringWebClientCaller caller = new SpringWebClientCaller(webClient);
+    static String jwt;
+
+    @BeforeAll
+    static void init() {
+        final String url1 = "http://localhost:8081/services";
+        final WebClient authClient = WebClient.create(url1);
+        var user = authClient.post()
+                .uri("/addAdmin")
+                .body(AdminUser.builder().username("foo").password("foo").build(), AdminUser.class)
+                .retrieve()
+                .bodyToMono(AdminUser.class)
+                .block();
+
+        assert user != null;
+        jwt = authClient.post()
+                .uri("/authenticate")
+                .body(user, AdminUser.class)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+
+    }
 
     @Test
     @Order(2)
