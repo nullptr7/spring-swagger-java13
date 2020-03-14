@@ -1,23 +1,15 @@
 package com.github.nullptr7.controller;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import com.github.nullptr7.models.Employee;
 import com.github.nullptr7.repo.AddressRepository;
 import com.github.nullptr7.repo.EmployeeRepository;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,9 +44,8 @@ public class EmployeeController {
     )
     public List<Employee> getEmployees() {
         List<Employee> employees = new ArrayList<>();
-        employeeRepository
-                .findAll()
-                .forEach(employees::add);
+        employeeRepository.findAll()
+                          .forEach(employees::add);
         return employees;
     }
 
@@ -179,7 +170,8 @@ public class EmployeeController {
      * @param updatedEmp       updated {@link Employee} object
      */
     public void createEmployeeEntity(Employee employeeToUpdate, Employee updatedEmp) {
-        if (isNotEmpty(updatedEmp.getFirstName()) && !updatedEmp.getFirstName().equals(employeeToUpdate.getFirstName())) {
+        if (isNotEmpty(updatedEmp.getFirstName()) && !updatedEmp.getFirstName()
+                                                                .equals(employeeToUpdate.getFirstName())) {
             employeeToUpdate.setFirstName(updatedEmp.getFirstName());
         }
         if (isNotEmpty(updatedEmp.getLastName()) && !updatedEmp.getLastName().equals(employeeToUpdate.getLastName())) {

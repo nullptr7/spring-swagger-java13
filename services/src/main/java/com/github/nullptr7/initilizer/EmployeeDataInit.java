@@ -29,24 +29,24 @@ public class EmployeeDataInit implements CommandLineRunner {
 
         Employee employee1 = new Employee(null, "Chris", "Evans", 50, "male", "Lead Engineer",
                 addressRepository.save(Address.builder()
-                        .addressLine1("Kharadi")
-                        .pinCode(411014)
-                        .build()));
+                                              .addressLine1("Kharadi")
+                                              .pinCode(411014)
+                                              .build()));
         Employee employee2 = new Employee(null, "Adam", "Sandler", 50, "male", "Senior Engineer",
                 addressRepository.save(Address.builder()
-                        .addressLine1("Chandanagar")
-                        .pinCode(411014)
-                        .build()));
+                                              .addressLine1("Chandanagar")
+                                              .pinCode(411014)
+                                              .build()));
         Employee employee3 = new Employee(null, "Jenny", "Richards", 32, "female", "Senior Engineer",
                 addressRepository.save(Address.builder()
-                        .addressLine1("Hinjwadi")
-                        .pinCode(411014)
-                        .build()));
+                                              .addressLine1("Hinjwadi")
+                                              .pinCode(411014)
+                                              .build()));
         Employee employee4 = new Employee(null, "Amy", "Adams", 44, "female", "Manager",
                 addressRepository.save(Address.builder()
-                        .addressLine1("Aundh")
-                        .pinCode(411014)
-                        .build()));
+                                              .addressLine1("Aundh")
+                                              .pinCode(411014)
+                                              .build()));
         List<Employee> employeeList = Arrays.asList(employee1, employee2, employee3, employee4);
 
 

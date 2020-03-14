@@ -1,7 +1,7 @@
 package com.github1.nullptr7.client;
 
-import com.github1.nullptr7.client.retry.RetryLogic;
 import com.github.nullptr7.models.Employee;
+import com.github1.nullptr7.client.retry.RetryLogic;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -27,11 +27,11 @@ public class SpringWebClientCaller {
      */
     public Supplier<List<Employee>> getEmployees = () ->
             webClient.get()
-                    .uri("/all")
-                    .retrieve()
-                    .bodyToFlux(Employee.class)
-                    .collectList()
-                    .block();
+                     .uri("/all")
+                     .retrieve()
+                     .bodyToFlux(Employee.class)
+                     .collectList()
+                     .block();
 
     /**
      * Returns {@link Employee} by Id
@@ -39,10 +39,10 @@ public class SpringWebClientCaller {
     public Function<Integer, Employee> getEmpById = id -> {
         try {
             return webClient.get()
-                    .uri("/{id}", id)
-                    .retrieve()
-                    .bodyToMono(Employee.class)
-                    .block();
+                            .uri("/{id}", id)
+                            .retrieve()
+                            .bodyToMono(Employee.class)
+                            .block();
         } catch (WebClientResponseException e) {
             log.error("Error response code is {} and body {}", e.getRawStatusCode(), e.getResponseBodyAsString());
             throw e;
@@ -57,23 +57,23 @@ public class SpringWebClientCaller {
      */
     public Function<Integer, Employee> getEmpByIdWithRetry = id ->
             webClient.get()
-                    .uri("/{id}", id)
-                    .retrieve()
-                    .bodyToMono(Employee.class)
-                    .retryWhen(RetryLogic.fixedRetry)
-                    .block();
+                     .uri("/{id}", id)
+                     .retrieve()
+                     .bodyToMono(Employee.class)
+                     .retryWhen(RetryLogic.fixedRetry)
+                     .block();
 
     /**
      * Returns {@link Employee} with error handling mechanism
      */
     public Function<Integer, Employee> getEmpByIdWithErrorHandling = id ->
             webClient.get()
-                    .uri("/{id}", id)
-                    .retrieve()
-                    .onStatus(HttpStatus::is4xxClientError, RetryLogic::handle4xxErrorResponse)
-                    .onStatus(HttpStatus::is5xxServerError, RetryLogic::handle5xxErrorResponse)
-                    .bodyToMono(Employee.class)
-                    .block();
+                     .uri("/{id}", id)
+                     .retrieve()
+                     .onStatus(HttpStatus::is4xxClientError, RetryLogic::handle4xxErrorResponse)
+                     .onStatus(HttpStatus::is5xxServerError, RetryLogic::handle5xxErrorResponse)
+                     .bodyToMono(Employee.class)
+                     .block();
 
     /**
      * Returns {@link Employee} object on successful insertion of employee
@@ -81,11 +81,11 @@ public class SpringWebClientCaller {
     public UnaryOperator<Employee> addEmployee = employee -> {
         try {
             return webClient.post()
-                    .uri("/employee")
-                    .bodyValue(employee)
-                    .retrieve()
-                    .bodyToMono(Employee.class)
-                    .block();
+                            .uri("/employee")
+                            .bodyValue(employee)
+                            .retrieve()
+                            .bodyToMono(Employee.class)
+                            .block();
         } catch (WebClientResponseException ex) {
             log.error("Error Response Code is: {} with message {}", ex.getRawStatusCode(), ex.getResponseBodyAsString());
             throw ex;
@@ -101,15 +101,15 @@ public class SpringWebClientCaller {
     public Function<String, List<Employee>> getEmpByName = name -> {
         try {
             final String urlString = UriComponentsBuilder.fromUriString("/employeeName")
-                    .queryParam("employee_name", name)
-                    .build()
-                    .toUriString();
+                                                         .queryParam("employee_name", name)
+                                                         .build()
+                                                         .toUriString();
             return webClient.get()
-                    .uri(urlString)
-                    .retrieve()
-                    .bodyToFlux(Employee.class)
-                    .collectList()
-                    .block();
+                            .uri(urlString)
+                            .retrieve()
+                            .bodyToFlux(Employee.class)
+                            .collectList()
+                            .block();
         } catch (WebClientResponseException ex) {
             log.error("Error in getEmpByName status {} and body {}", ex.getRawStatusCode(), ex.getResponseBodyAsString());
             throw ex;
@@ -122,11 +122,11 @@ public class SpringWebClientCaller {
     public Function<Integer, UnaryOperator<Employee>> updateEmployee = id -> employee -> {
         try {
             return webClient.put()
-                    .uri("/employee/{id}", id)
-                    .bodyValue(employee)
-                    .retrieve()
-                    .bodyToMono(Employee.class)
-                    .block();
+                            .uri("/employee/{id}", id)
+                            .bodyValue(employee)
+                            .retrieve()
+                            .bodyToMono(Employee.class)
+                            .block();
         } catch (WebClientResponseException ex) {
             log.error("Error in updateEmployee status {} and body {}", ex.getRawStatusCode(), ex.getResponseBodyAsString());
             throw ex;
@@ -139,10 +139,10 @@ public class SpringWebClientCaller {
     public Function<Long, String> deleteEmployee = id -> {
         try {
             return webClient.delete()
-                    .uri("/employee/{id}", id)
-                    .retrieve()
-                    .bodyToMono(String.class)
-                    .block();
+                            .uri("/employee/{id}", id)
+                            .retrieve()
+                            .bodyToMono(String.class)
+                            .block();
         } catch (WebClientResponseException ex) {
             log.error("Error in deleteEmployee status {} and body {}", ex.getRawStatusCode(), ex.getResponseBodyAsString());
             throw ex;

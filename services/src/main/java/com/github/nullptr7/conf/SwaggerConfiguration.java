@@ -19,11 +19,10 @@ public class SwaggerConfiguration {
     @Bean
     public Docket moviesAPI() {
 
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("org.tiaa.controller"))
-                .build()
-                .apiInfo(apiInfo());
+        return new Docket(DocumentationType.SWAGGER_2).select()
+                                                      .apis(RequestHandlerSelectors.basePackage("org.tiaa.controller"))
+                                                      .build()
+                                                      .apiInfo(apiInfo());
     }
 
 
